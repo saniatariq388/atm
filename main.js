@@ -1,9 +1,10 @@
 #! /usr/bin/env node
 import inquirer from "inquirer";
+import chalk from "chalk";
 let myBalance = 10000; // Dollar
 let myPin = 1234;
-console.log("********\t\n Welcome To The ATM \t\n********");
-console.log("Insert Your ATM Card");
+console.log(chalk.blue.bold.bgCyan("************** Welcome To The ATM ************"));
+console.log(chalk.yellow.italic("Insert Your ATM Card"));
 let pinAnswer = await inquirer.prompt([
     {
         name: "pin",
@@ -13,16 +14,16 @@ let pinAnswer = await inquirer.prompt([
 ]);
 //12345 === 1234 - false
 if (pinAnswer.pin === myPin) {
-    console.log("Correct Pin Code You May Proceed Now");
-    console.log(`Your Current Balance Is ${myBalance}`);
+    console.log(chalk.red.underline("Correct Pin Code You May Proceed Now"));
+    console.log(chalk.green(`Your Current Balance Is ${myBalance}`));
 }
 if (pinAnswer.pin === myPin) {
     let operations = await inquirer.prompt([
         {
             name: "options",
             type: "list",
-            message: "Select Your Option",
-            choices: ["withdraw", "check balance", "fastcash", "exit"],
+            message: chalk.yellow.bgWhite("Select Your Option"),
+            choices: ["withdraw", "check balance", "fastcash"],
         },
     ]);
     if (operations.options === "withdraw") {
@@ -40,11 +41,11 @@ if (pinAnswer.pin === myPin) {
             withdrawAns.amount < myBalance;
         {
             myBalance -= withdrawAns.amount;
-            console.log("Now Your Remaining Balance Is" + myBalance);
+            console.log(chalk.yellowBright("Now Your Remaining Balance Is" + myBalance));
         }
     }
     else if (operations.options === "check balance") {
-        console.log(`Your Current Balance Is ${myBalance}`);
+        console.log(chalk.yellowBright(`Your Current Balance Is ${myBalance}`));
     }
     else if (operations.options === "fastcash") {
         let fastCashAns = await inquirer.prompt({
@@ -55,21 +56,20 @@ if (pinAnswer.pin === myPin) {
         });
         if (fastCashAns.fast_opt === "1000") {
             myBalance -= fastCashAns.fast_opt;
-            console.log(`Your Remaining Balance Is ${myBalance}`);
+            console.log(chalk.yellowBright(`Your Remaining Balance Is ${myBalance}`));
         }
         else if (fastCashAns.fast_opt === "2000") {
             myBalance -= fastCashAns.fast_opt;
-            console.log(`Your Remaining Balance Is ${myBalance}`);
+            console.log(chalk.yellowBright(`Your Remaining Balance Is ${myBalance}`));
         }
         else if (fastCashAns.fast_opt === "5000") {
             myBalance -= fastCashAns.fast_opt;
-            console.log(`Your Remaining Balance Is ${myBalance}`);
+            console.log(chalk.yellowBright(`Your Remaining Balance Is ${myBalance}`));
         }
     }
-    else if (operations.options === "exit") {
-        console.log(" Thanks For  Your Time.You May EXIT Now!!");
+    else {
+        console.log(chalk.blue.bold.bgCyan("Invalid PIN code"));
     }
 }
-else {
-    console.log("INVALID PIN CODE");
-}
+console.log(chalk.yellowBright("You May EXIT Now!!"));
+console.log(chalk.blue.bold.bgCyan("******************* THANK YOU ***********************"));
